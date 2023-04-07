@@ -1,75 +1,137 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Happy Birthday Jess!</title>
+	<title>Happy Birthday Jess</title>
 	<style>
 		body {
-			background-color: pink;
 			font-family: Arial, sans-serif;
+			background-color: #ffccee;
 			text-align: center;
 		}
-		
+
 		h1 {
-			color: white;
-			font-size: 3em;
-			margin-top: 30px;
+			color: #880000;
+			font-size: 50px;
 		}
-		
-		img {
-			max-width: 100%;
-			height: auto;
-			display: block;
-			margin: 0 auto;
-			margin-bottom: 20px;
+
+		p {
+			color: #000;
+			font-size: 30px;
 		}
-		
-		#game {
-			margin-top: 30px;
-			margin-bottom: 30px;
+
+		#game-board {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			margin-top: 50px;
+		}
+
+		.card {
 			width: 450px;
 			height: 600px;
-			background-color: white;
-			border: 2px solid black;
-			position: relative;
-			overflow: hidden;
+			margin: 10px;
+			background-color: #f2f2f2;
+			border-radius: 10px;
+			box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+			cursor: pointer;
 		}
-		
-		#result {
-			font-size: 2em;
-			font-weight: bold;
-			margin-top: 20px;
+
+		.card img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 10px;
 		}
+
 	</style>
 </head>
 <body>
 	<h1>Happy Birthday Jess!</h1>
-	<p>Thank you for being the most amazing wife in the world. I hope you have a wonderful day filled with love and joy.</p>
-	
-	<img src="balloon.png" alt="Balloons" width="450" height="600">
-	<img src="cake.png" alt="Cake" width="450" height="600">
-	<img src="gift.png" alt="Presents" width="450" height="600">
-	
-	<div id="game">
-		<p>Click the button to see your birthday message:</p>
-		<button onclick="showMessage()">Get message</button>
-		<p id="result"></p>
+	<p>We hope you have a fantastic day!</p>
+
+	<div id="game-board">
+		<div class="card">
+			<img src="balloon.png">
+		</div>
+		<div class="card">
+			<img src="cake.png">
+		</div>
+		<div class="card">
+			<img src="gift.png">
+		</div>
+		<div class="card">
+			<img src="balloon.png">
+		</div>
+		<div class="card">
+			<img src="cake.png">
+		</div>
+		<div class="card">
+			<img src="gift.png">
+		</div>
 	</div>
-	
+
 	<script>
-		function showMessage() {
-			var messages = [
-				"Happy birthday to the love of my life!",
-				"You make every day brighter with your smile and your love. Have a wonderful birthday!",
-				"I'm so grateful to have you in my life. Happy birthday, Jess!",
-				"May all your wishes come true today and always. Happy birthday!",
-				"I hope your day is as special as you are. Happy birthday, my love!"
-			];
-			
-			var randomIndex = Math.floor(Math.random() * messages.length);
-			var message = messages[randomIndex];
-			
-			document.getElementById("result").innerHTML = message;
+		var cards = document.querySelectorAll('.card');
+
+		var hasFlippedCard = false;
+		var lockBoard = false;
+		var firstCard, secondCard;
+
+		function flipCard() {
+			if (lockBoard) return;
+			if (this === firstCard) return;
+
+			this.classList.add('flip');
+
+			if (!hasFlippedCard) {
+				hasFlippedCard = true;
+				firstCard = this;
+				return;
+			}
+
+			secondCard = this;
+
+			checkForMatch();
 		}
+
+		function checkForMatch() {
+			var isMatch = firstCard.children[0].src === secondCard.children[0].src;
+
+			isMatch ? disableCards() : unflipCards();
+		}
+
+		function disableCards() {
+			firstCard.removeEventListener('click', flipCard);
+			secondCard.removeEventListener('click', flipCard);
+
+			resetBoard();
+		}
+
+		function unflipCards() {
+			lockBoard = true;
+
+			setTimeout(() => {
+				firstCard.classList.remove('flip');
+				secondCard.classList.remove('flip');
+
+				resetBoard();
+			}, 1500);
+		}
+
+		function resetBoard() {
+			[hasFlippedCard, lockBoard] = [false, false];
+			[firstCard, secondCard] = [null, null];
+		}
+
+		(function shuffle() {
+			cards.forEach(card => {
+				var randomPos = Math.floor(Math.random() * 6);
+				card.style.order = randomPos;
+			});
+		})();
+
+		cards.forEach(card => card.addEventListener('click', flipCard));
+
 	</script>
 </body>
 </html>
