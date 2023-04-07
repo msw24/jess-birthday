@@ -1,10 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Happy Birthday Jess</title>
+	<title>Happy Birthday Jess!</title>
+	<style>
+		body {
+			background-color: pink;
+			font-family: Arial, sans-serif;
+			text-align: center;
+		}
+		
+		h1 {
+			color: white;
+			font-size: 3em;
+			margin-top: 30px;
+		}
+		
+		img {
+			max-width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+			margin-bottom: 20px;
+		}
+		
+		#game {
+			margin-top: 30px;
+			margin-bottom: 30px;
+			width: 450px;
+			height: 600px;
+			background-color: white;
+			border: 2px solid black;
+			position: relative;
+			overflow: hidden;
+		}
+		
+		#result {
+			font-size: 2em;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+	</style>
 </head>
 <body>
 	<h1>Happy Birthday Jess!</h1>
-	<p>We hope you have a fantastic day!</p>
+	<p>Thank you for being the most amazing wife in the world. I hope you have a wonderful day filled with love and joy.</p>
+	
+	<img src="images/balloon.png" alt="Balloons" width="450" height="600">
+	<img src="images/cake.png" alt="Cake" width="450" height="600">
+	<img src="images/gift.png" alt="Presents" width="450" height="600">
+	
+	<div id="game">
+		<p>Click the button to see your birthday message:</p>
+		<button onclick="showMessage()">Get message</button>
+		<p id="result"></p>
+	</div>
+	
+	<script>
+		function showMessage() {
+			var messages = [
+				"Happy birthday to the love of my life!",
+				"You make every day brighter with your smile and your love. Have a wonderful birthday!",
+				"I'm so grateful to have you in my life. Happy birthday, Jess!",
+				"May all your wishes come true today and always. Happy birthday!",
+				"I hope your day is as special as you are. Happy birthday, my love!"
+			];
+			
+			var randomIndex = Math.floor(Math.random() * messages.length);
+			var message = messages[randomIndex];
+			
+			document.getElementById("result").innerHTML = message;
+		}
+	</script>
 </body>
 </html>
