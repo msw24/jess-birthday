@@ -40,36 +40,32 @@
 			object-fit: cover;
 			border-radius: 10px;
 		}
-.card .front-face {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    transform: rotateY(0deg);
-    z-index: 2;
-}
-
-.card .back-face {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    transform: rotateY(180deg);
-    z-index: 1;
-}
-
-.card.flip .front-face {
-    transform: rotateY(180deg);
-}
-
-.card.flip .back-face {
-    transform: rotateY(0deg);
-}
-
+		.card .front-face {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+			transform: rotateY(0deg);
+			z-index: 2;
+		}
+		.card .back-face {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+			transform: rotateY(180deg);
+			z-index: 1;
+		}
+		.card.flip .front-face {
+			transform: rotateY(180deg);
+		}
+		.card.flip .back-face {
+			transform: rotateY(0deg);
+		}
 	</style>
 </head>
 <body>
@@ -77,55 +73,92 @@
 	<p>We hope you have a fantastic day!</p>
 
 	<div id="game-board">
-    <div class="card">
-        <img class="front-face" src="balloon.png">
-        <img class="back-face" src="card-back.png">
-    </div>
-    <div class="card">
-        <img class="front-face" src="balloon.png">
-        <img class="back-face" src="card-back.png">
-    </div>
-    <div class="card">
-        <img class="front-face" src="cake.png">
-        <img class="back-face" src="card-back.png">
-    </div>
-    <div class="card">
-        <img class="front-face" src="cake.png">
-        <img class="back-face" src="card-back.png">
-    </div>
-    <div class="card">
-        <img class="front-face" src="flower.png">
-        <img class="back-face" src="card-back.png">
-    </div>
-    <div class="card">
-        <img class="front-face" src="flower.png">
-        <img class="back-face" src="card-back.png">
-    </div>
-</div>
-
+	    <div class="card">
+	        <img class="front-face" src="balloon.png">
+	        <img class="back-face" src="card-back.png">
+	    </div>
+	    <div class="card">
+	        <img class="front-face" src="balloon.png">
+	        <img class="back-face" src="card-back.png">
+	    </div>
+	    <div class="card">
+	        <img class="front-face" src="cake.png">
+	        <img class="back-face" src="card-back.png">
+	    </div>
+	    <div class="card">
+	        <img class="front-face" src="cake.png">
+	        <img class="back-face" src="card-back.png">
+	    </div>
+	    <div class="card">
+	        <img class="front-face" src="flower.png">
+	        <img class="back-face" src="card-back.png">
+	    </div>
+	    <div class="card">
+	        <img class="front-face" src="flower.png">
+	        <img class="back-face" src="card-back.png">
+	    </div>
+	</div>
 
 	<script>
-		var cards = document.querySelectorAll('.card');
-		var hasFlippedCard = false;
-		var lockBoard = false;
-		var firstCard, secondCard;
+		var cards = document.querySelectorAll('.card
+<script>
+  var cards = document.querySelectorAll('.card');
+  var hasFlippedCard = false;
+  var lockBoard = false;
+  var firstCard, secondCard;
 
-		function flipCard() {
-			if (lockBoard) return;
-			if (this === firstCard) return;
-			this.classList.add('flip');
+  function flipCard() {
+    if (lockBoard) return;
+    if (this === firstCard) return;
+    this.classList.add('flip');
 
-			if (!hasFlippedCard) {
-				hasFlipped
-function shuffleCards() {
-  cards.forEach(card => {
-    var randomPos = Math.floor(Math.random() * cards.length);
-    card.style.order = randomPos;
-  });
-}
+    if (!hasFlippedCard) {
+      hasFlippedCard = true;
+      firstCard = this;
+      return;
+    }
 
-shuffleCards();
+    secondCard = this;
+    checkForMatch();
+  }
 
+  function checkForMatch() {
+    var isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+    isMatch ? disableCards() : unflipCards();
+  }
+
+  function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+
+    resetBoard();
+  }
+
+  function unflipCards() {
+    lockBoard = true;
+
+    setTimeout(() => {
+      firstCard.classList.remove('flip');
+      secondCard.classList.remove('flip');
+
+      resetBoard();
+    }, 1500);
+  }
+
+  function resetBoard() {
+    [hasFlippedCard, lockBoard] = [false, false];
+    [firstCard, secondCard] = [null, null];
+  }
+
+  (function shuffleCards() {
+    cards.forEach(card => {
+      var randomPos = Math.floor(Math.random() * cards.length);
+      card.style.order = randomPos;
+    });
+  })();
+
+  cards.forEach(card => card.addEventListener('click', flipCard));
 </script>
+
 </body>
 </html>
